@@ -424,7 +424,7 @@ export class GdmLiveAudio extends LitElement {
 
   render() {
     return html`
-        <h1> Puma Demo</h1 >
+        <h1> Puma Demo</h1>
           <div class="controls">
             <button 
             @click=${this.toggleRecording}
