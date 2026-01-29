@@ -227,8 +227,9 @@ export class GdmLiveAudio extends LitElement {
           systemInstruction: {
             parts: [
               {
-                text: `You are the Senior Triage Specialist for Puma India, based in Bangalore.
-        
+                text: `You are a helpful Support Agent for Puma India.
+                When the conversation starts, say: "Thank you for calling Puma Support. I am your support agent. How can I help you today?"
+
                 **VOICE AND PACING STRATEGY**:
                 - ROLEPLAY: You are a polite, helpful Indian lady. 
                 - ACCENT: Speak with a clear, soft Bangalore English accent.
@@ -270,7 +271,7 @@ export class GdmLiveAudio extends LitElement {
   }
 
   private async handleToolCall(name: string, args: any) {
-    console.log(`Tool Call: ${name}`, args);
+    console.log(`Tool Call: ${name} `, args);
     this.updateStatus(`Checking ${name}...`);
 
     let orderId = String(args.order_id || "").trim();
@@ -285,7 +286,7 @@ export class GdmLiveAudio extends LitElement {
       const order = await fetchOrderById(orderId);
 
       if (!order) {
-        return { error: `Order ${orderId} not found in our system. Please check the ID.` };
+        return { error: `Order ${orderId} not found in our system.Please check the ID.` };
       }
 
       if (name === "get_order_status") {
@@ -300,14 +301,14 @@ export class GdmLiveAudio extends LitElement {
             status: "Stuck/Delayed",
             details: order,
             action: "Escalated to Logistics Team",
-            message: `We apologize. Your order ${orderId} seems to be stuck. Since it has been more than 6 days, I have escalated this to our logistics team for an immediate update.`
+            message: `We apologize.Your order ${orderId} seems to be stuck.Since it has been more than 6 days, I have escalated this to our logistics team for an immediate update.`
           };
         }
 
         return {
           status: status,
           details: order,
-          message: `Order ${orderId} is currently ${status}. Items: ${order.items}.`
+          message: `Order ${orderId} is currently ${status}.Items: ${order.items}.`
         };
       }
 
@@ -318,13 +319,13 @@ export class GdmLiveAudio extends LitElement {
           return {
             status: "Processed",
             details: order,
-            message: `Refund for ${orderId} has been successfully processed. The Bank Reference Number (RRN) is ${order.refund_rrn || 'available in your statement'}. Please check with your bank.`
+            message: `Refund for ${orderId} has been successfully processed.The Bank Reference Number(ARN) is ${order.refund_rrn || 'available in your statement'}. Please check with your bank.`
           };
         } else {
           return {
             status: "Pending",
             sla_info: "Refunds typically take 5-7 business days after return pickup.",
-            message: `Your refund for ${orderId} is currently pending. It generally takes 5-7 business days.`
+            message: `Your refund for ${orderId} is currently pending.It generally takes 5 - 7 business days.`
           };
         }
       }
@@ -399,7 +400,7 @@ export class GdmLiveAudio extends LitElement {
       this.isRecording = true;
     } catch (err) {
       console.error('Error starting recording:', err);
-      this.updateStatus(`Error: ${err.message}`);
+      this.updateStatus(`Error: ${err.message} `);
       this.stopRecording();
     }
   }
@@ -424,17 +425,17 @@ export class GdmLiveAudio extends LitElement {
 
   render() {
     return html`
-        <h1>Puma Demo</h1>
-        <div class="controls">
-          <button 
-            @click=${this.toggleRecording} 
+        < h1 > Puma Demo</h1 >
+          <div class="controls">
+            <button 
+            @click=${this.toggleRecording}
             class=${this.isRecording ? 'recording' : ''}
             ?disabled=${!this.connected}
           >
             ${this.isRecording ? 'Stop / Disconnect' : 'Connect / Start'}
           </button>
-        </div>
+        </div >
         <div id="status">${this.error || this.status}</div>
-    `;
+      `;
   }
 }
